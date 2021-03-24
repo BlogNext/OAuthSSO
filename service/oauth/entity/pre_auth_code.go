@@ -7,15 +7,15 @@ import (
 
 //预授权码的传输实体
 type PreAuthCodeEntity struct {
-	User   UserEntity
-	Client ClientEntity
+	User   UserEntity `json:"user"`
+	Client ClientEntity `json:"client"`
 	//预授权码
 	PreAuthCode string `form:"pre_auth_code" json:"pre_auth_code"`
 }
 
 func (pace PreAuthCodeEntity) GetError(validationErrors validator.ValidationErrors) string {
 	for _, fieldErr := range validationErrors {
-		
+
 		if strings.Contains(fieldErr.StructNamespace(), "Client") {
 			return pace.Client.GetError(validationErrors)
 		}
