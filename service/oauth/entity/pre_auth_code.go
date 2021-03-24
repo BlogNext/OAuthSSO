@@ -31,4 +31,6 @@ func (c CreatePreAuthCodeRequest) GetError(validationErrors validator.Validation
 type CreatePreAuthCodeResponse struct {
 	//预授权码
 	PreAuthCode string `form:"pre_auth_code" json:"pre_auth_code"`
+	//用户授权客户之后，重定向地址到客户的服务器地址，让客户的后台通过预授权码获取accessToken
+	RedirectUrl string `form:"redirect_url" json:"redirect_url"`
 }
