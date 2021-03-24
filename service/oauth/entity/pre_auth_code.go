@@ -7,8 +7,8 @@ import (
 
 //预授权码的传输实体
 type PreAuthCodeEntity struct {
-	User   UserEntity `json:"user"`
-	Client ClientEntity `json:"client"`
+	User   *UserEntity   `json:"user,omitempty"`
+	Client *ClientEntity `json:"client,omitempty"`
 	//预授权码
 	PreAuthCode string `form:"pre_auth_code" json:"pre_auth_code"`
 }
