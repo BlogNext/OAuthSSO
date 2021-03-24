@@ -1,6 +1,9 @@
 package entity
 
-import "github.com/go-playground/validator/v10"
+import (
+	"github.com/go-playground/validator/v10"
+	"strings"
+)
 
 //预授权码的传输实体
 type PreAuthCodeEntity struct {
@@ -11,9 +14,15 @@ type PreAuthCodeEntity struct {
 }
 
 func (pace PreAuthCodeEntity) GetError(validationErrors validator.ValidationErrors) string {
-	errMsg := pace.User.GetError(validationErrors)
-	if errMsg != "" {
-		return errMsg
+	for _, fieldErr := range validationErrors {
+		
+		if strings.Contains(fieldErr.StructNamespace(), "Client") {
+			return pace.Client.GetError(validationErrors)
+		}
+
+		if strings.Contains(fieldErr.StructNamespace(), "User") {
+			return pace.User.GetError(validationErrors)
+		}
 	}
 
 	return validationErrors.Error()

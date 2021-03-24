@@ -1,6 +1,8 @@
 package entity
 
-import "github.com/go-playground/validator/v10"
+import (
+	"github.com/go-playground/validator/v10"
+)
 
 //用户的传输实体
 type UserEntity struct {
@@ -12,6 +14,7 @@ type UserEntity struct {
 
 //自定义错误信息
 func (u UserEntity) GetError(validationErrors validator.ValidationErrors) string {
+
 	for _, fieldErr := range validationErrors {
 
 		if fieldErr.Field() == "Nickname" {

@@ -1,6 +1,8 @@
 package entity
 
-import "github.com/go-playground/validator/v10"
+import (
+	"github.com/go-playground/validator/v10"
+)
 
 type ClientEntity struct {
 	//客户id
