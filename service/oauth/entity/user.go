@@ -5,15 +5,15 @@ import (
 )
 
 //用户的传输实体
-type UserEntity struct {
+type UserRequest struct {
 	//用户的昵称
 	Nickname string `form:"nickname" json:"nickname" binding:"required"`
 	//密码
-	Password string `form:"password" json:"password,omitempty" binding:"required"`
+	Password string `form:"password" json:"password" binding:"required"`
 }
 
 //自定义错误信息
-func (u UserEntity) GetError(validationErrors validator.ValidationErrors) string {
+func (u UserRequest) GetError(validationErrors validator.ValidationErrors) string {
 
 	for _, fieldErr := range validationErrors {
 

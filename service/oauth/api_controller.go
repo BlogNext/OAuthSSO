@@ -4,17 +4,24 @@ import (
 	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/help"
 	"github.com/OauthSSO/service/oauth/entity"
+	"github.com/OauthSSO/service/oauth/service"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
 func CreatePreAuthCode(ctx *gin.Context) {
-	var perAuthCode entity.PreAuthCodeEntity
-	if err := ctx.ShouldBind(&perAuthCode); err != nil {
-		panic(exception.NewException(exception.ParamErr, perAuthCode.GetError(err.(validator.ValidationErrors))))
+	var request entity.CreatePreAuthCodeRequest
+
+	if err := ctx.ShouldBind(&request); err != nil {
+		panic(exception.NewException(exception.ParamErr, request.GetError(err.(validator.ValidationErrors))))
 	}
 
-	help.Gin200SuccessResponse(ctx, "成功", perAuthCode)
+	//创建预授权码
+	auth := service.GetAuthInstall()
+	response := auth.CreatePreAuthCode(&request)
+
+	help.Gin200SuccessResponse(ctx, "成功", response)
+
 	return
 }
 
