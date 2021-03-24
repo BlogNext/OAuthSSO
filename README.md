@@ -12,4 +12,8 @@ oauth2.0实现单点登录
 ## 项目目录架构
 
 
->Oauth
+>OAuth
+
+>>service 后台代码(详情查看service/readme.md)
+
+>> web   前端代码
