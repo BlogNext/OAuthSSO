@@ -1,0 +1,5 @@
+mysql:
+  sources:
+    dsn: root:admin123@tcp(154.8.142.48:3306)/blog_xiaochen?charset=utf8mb4&parseTime=True&loc=Local
+  replicas:
+    dsn: root:admin123@tcp(154.8.142.48:3306)/blog_xiaochen?charset=utf8mb4&parseTime=True&loc=Local

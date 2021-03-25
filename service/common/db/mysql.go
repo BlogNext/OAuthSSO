@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/OauthSSO/service/common/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -11,7 +12,13 @@ func init() {
 
 	//注册db
 	if db == nil {
-		dsn := "root:admin123@tcp(154.8.142.48:3306)/blog_xiaochen?charset=utf8mb4&parseTime=True&loc=Local"
+		err := config.LoadConfig("db", "config", "yaml")
+		if err != nil {
+			panic("db配置加载失败")
+		}
+		dbConfig, _ := config.GetConfig("db")
+		dbMap := dbConfig.GetStringMap("mysql")
+		dsn := dbMap["sources"].(map[string]interface{})["dsn"].(string)
 		db, _ = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	}
 }

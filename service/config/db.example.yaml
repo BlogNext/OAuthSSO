@@ -1,0 +1,5 @@
+mysql:
+  sources:
+    dsn: root:asdf@tcp(216.24.183.162:3306)/blog_develop?charset=utf8mb4&parseTime=True&loc=Local
+  replicas:
+    dsn: root:asdfff@tcp(216.24.183.162:3306)/blog_develop?charset=utf8mb4&parseTime=True&loc=Local
