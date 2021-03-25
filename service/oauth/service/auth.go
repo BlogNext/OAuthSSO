@@ -112,9 +112,37 @@ func (a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequ
 		panic(exception.NewException(exception.ParamErr, "client信息不正确"))
 	}
 
+	//生成accessToken和refreshToken
+
+	//accessToken用jwt生成,有效时间2小时
+	accessTokenClaims := &entity.AccessTokenJwt{
+		StandardClaims: jwt.StandardClaims{
+			Issuer:    "ly",
+			ExpiresAt: time.Now().Add(2 * time.Hour).Unix(),
+		},
+		ClientId: preAuthCodeJwtClaims.ClientId,
+		UserId:   preAuthCodeJwtClaims.UserId,
+	}
+
+	accessTokenToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
+	accessToken, _ := accessTokenToken.SignedString(jwtSigningKey)
+
+	//refreshToken用jwt生成，无限时间
+	refreshTokenClaims := &entity.RefreshTokenJwt{
+		StandardClaims: jwt.StandardClaims{
+			Issuer: "ly",
+		},
+		ClientId: preAuthCodeJwtClaims.ClientId,
+		UserId:   preAuthCodeJwtClaims.UserId,
+	}
+
+	refreshTokenToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshTokenClaims)
+	refreshToken, _ := refreshTokenToken.SignedString(jwtSigningKey)
+
+	//返回数据
 	response = new(entity.PreAuthCodeAccessTokenResponse)
-	response.AccessToken = "123"
-	response.RefreshToken = "123111"
+	response.AccessToken = accessToken
+	response.RefreshToken = refreshToken
 
 	return response
 }
