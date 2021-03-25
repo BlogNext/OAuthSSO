@@ -3,8 +3,6 @@
 
 >> 功能模块名
 
->>> model 层与数据库表一一对应
-
 >>> service 层提供服务(不会对数据做任何的验证处理，到service的数据都是对的)
 
 >>> entity (定义接口的request和response),request可以实现validator.v10的数据验证功能
@@ -14,6 +12,8 @@
 > exception 自定义的运行时异常
 
 > main.go 入口函数,路由入口
+
+> model 层与数据库表一一对应
 
 > help 一些帮助的方法,一些快捷方法
 

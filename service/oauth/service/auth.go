@@ -7,7 +7,7 @@ import (
 	"github.com/OauthSSO/service/common/db"
 	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/oauth/entity"
-	"github.com/OauthSSO/service/oauth/model"
+	"github.com/OauthSSO/service/model"
 	"github.com/dgrijalva/jwt-go"
 	"strings"
 	"time"
