@@ -112,44 +112,58 @@ func (a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequ
 		panic(exception.NewException(exception.ParamErr, "client信息不正确"))
 	}
 
-	//生成accessToken和refreshToken
+	//生成accessToken和refreshToken,返回数据
+	response = new(entity.PreAuthCodeAccessTokenResponse)
+	response.AccessToken, response.RefreshToken = a.generateToken(preAuthCodeJwtClaims.ClientId, preAuthCodeJwtClaims.UserId)
+	return response
+}
 
+//生成一对accessToken和RefreshToken
+func (a *auth) generateToken(clientId string, userId uint64) (accessToken string, refreshToken string) {
 	//accessToken用jwt生成,有效时间2小时
 	accessTokenClaims := &entity.AccessTokenJwt{
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    "ly",
 			ExpiresAt: time.Now().Add(2 * time.Hour).Unix(),
 		},
-		ClientId: preAuthCodeJwtClaims.ClientId,
-		UserId:   preAuthCodeJwtClaims.UserId,
+		ClientId: clientId,
+		UserId:   userId,
 	}
 
 	accessTokenToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessTokenClaims)
-	accessToken, _ := accessTokenToken.SignedString(jwtSigningKey)
+	accessToken, _ = accessTokenToken.SignedString(jwtSigningKey)
 
 	//refreshToken用jwt生成，无限时间
 	refreshTokenClaims := &entity.RefreshTokenJwt{
 		StandardClaims: jwt.StandardClaims{
 			Issuer: "ly",
 		},
-		ClientId: preAuthCodeJwtClaims.ClientId,
-		UserId:   preAuthCodeJwtClaims.UserId,
+		ClientId: clientId,
+		UserId:   userId,
 	}
 
 	refreshTokenToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshTokenClaims)
-	refreshToken, _ := refreshTokenToken.SignedString(jwtSigningKey)
+	refreshToken, _ = refreshTokenToken.SignedString(jwtSigningKey)
 
-	//返回数据
-	response = new(entity.PreAuthCodeAccessTokenResponse)
-	response.AccessToken = accessToken
-	response.RefreshToken = refreshToken
+	return
 
-	return response
 }
 
 //刷新token
 func (a *auth) RefreshToken(request *entity.RefreshTokenRequest) (response *entity.RefreshTokenResponse) {
 
+	//验证预授权码是否过期
+	refreshTokenJwtClaims := &entity.RefreshTokenJwt{}
+	token, _ := jwt.ParseWithClaims(request.RefreshToken, refreshTokenJwtClaims, func(token *jwt.Token) (i interface{}, err error) {
+		return jwtSigningKey, nil
+	})
 
-	return nil
+	if !token.Valid {
+		panic(exception.NewException(exception.ParamErr, "refresh_token已经失效"))
+	}
+
+	response = new(entity.RefreshTokenResponse)
+	response.AccessToken, response.RefreshToken = a.generateToken(refreshTokenJwtClaims.ClientId, refreshTokenJwtClaims.UserId)
+
+	return response
 }
