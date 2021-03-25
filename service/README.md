@@ -17,3 +17,19 @@
 
 > help 一些帮助的方法,一些快捷方法
 
+> config 配置文件夹
+
+> common 放一些自己写的类库
+
+>> cache 
+
+>>> lru lru算法实现的内存缓存
+
+>>>> lru_sync.go 线程安全的lru
+
+>>>> lru.go 线程不安全的lru(未实现)
+
+>> db 统一的db连接
+
+>>> mysql.go gorm官网连接mysql
+

@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/OauthSSO/service/common/db"
 	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/help"
 	"github.com/OauthSSO/service/oauth"
@@ -41,7 +42,6 @@ func apiRouter(api *gin.RouterGroup) {
 
 		ctx.Next()
 	})
-
 
 	//路由
 	api.GET("/ping", func(c *gin.Context) {

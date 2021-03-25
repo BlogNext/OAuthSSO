@@ -2,25 +2,51 @@ package entity
 
 import (
 	"github.com/go-playground/validator/v10"
-	"strings"
 )
 
 //创建预授权码请求
 type CreatePreAuthCodeRequest struct {
-	User   *UserRequest   `json:"user"`
-	Client *ClientRequest `json:"client"`
+	//用户的昵称
+	Nickname string `form:"nickname" json:"nickname" binding:"required"`
+	//密码
+	Password string `form:"password" json:"password" binding:"required"`
+	//客户id
+	ClientId string `form:"client_id" json:"client_id" binding:"required"`
+	//获取预授权码之后，重定向到原来的页面
+	RedirectUrl string `form:"redirect_url" json:"redirect_url" binding:"required"`
 }
 
 //创建预授权码
 func (c CreatePreAuthCodeRequest) GetError(validationErrors validator.ValidationErrors) string {
+
 	for _, fieldErr := range validationErrors {
 
-		if strings.Contains(fieldErr.StructNamespace(), "Client") {
-			return c.Client.GetError(validationErrors)
+		if fieldErr.Field() == "Nickname" {
+			switch fieldErr.Tag() {
+			case "required":
+				return "用户昵称nickname必填"
+			}
 		}
 
-		if strings.Contains(fieldErr.StructNamespace(), "User") {
-			return c.User.GetError(validationErrors)
+		if fieldErr.Field() == "Password" {
+			switch fieldErr.Tag() {
+			case "required":
+				return "密码password必填"
+			}
+		}
+
+		if fieldErr.Field() == "ClientId" {
+			switch fieldErr.Tag() {
+			case "required":
+				return "client_id必填"
+			}
+		}
+
+		if fieldErr.Field() == "RedirectUrl" {
+			switch fieldErr.Tag() {
+			case "required":
+				return "redirect_url必填"
+			}
 		}
 	}
 
