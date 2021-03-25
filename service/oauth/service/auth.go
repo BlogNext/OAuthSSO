@@ -62,3 +62,8 @@ func (a *auth) CreatePreAuthCode(request *entity.CreatePreAuthCodeRequest) (resp
 	response.PreAuthCode = preAuthCodeKey
 	return response
 }
+
+//preAuthCode换出AccessToken
+func(a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequest)(response *entity.PreAuthCodeAccessTokenResponse){
+	return nil
+}

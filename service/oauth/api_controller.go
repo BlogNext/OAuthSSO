@@ -27,6 +27,19 @@ func CreatePreAuthCode(ctx *gin.Context) {
 
 //预授权码换取token模式
 func PreAuthCodeAccessToken(ctx *gin.Context) {
+	var request entity.PreAuthCodeAccessTokenRequest
+
+	if err := ctx.ShouldBind(&request); err != nil {
+		panic(exception.NewException(exception.ParamErr, request.GetError(err.(validator.ValidationErrors))))
+	}
+
+	//预授权码换取AccessToken
+	auth := service.GetAuthInstall()
+	response := auth.PreAuthCodeAccessToken(&request)
+
+	help.Gin200SuccessResponse(ctx, "成功", response)
+
+	return
 }
 
 //通过refreshToken刷新token
