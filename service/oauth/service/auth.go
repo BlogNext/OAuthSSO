@@ -17,8 +17,7 @@ var single *auth
 
 func init() {
 	if single == nil {
-		single = new(auth)
-		single.lruCache = lru.NewLruCache(30)
+		single = newAuth()
 	}
 }
 
@@ -29,7 +28,12 @@ func GetAuthInstall() *auth {
 
 type auth struct {
 	//缓存
-	lruCache *lru.LruCache
+	lruCache    *lru.LruCache
+	OAuthClient OAuthClient
+}
+
+func newAuth() *auth {
+	return &auth{lruCache: lru.NewLruCache(30)}
 }
 
 //创建预授权码
@@ -64,6 +68,6 @@ func (a *auth) CreatePreAuthCode(request *entity.CreatePreAuthCodeRequest) (resp
 }
 
 //preAuthCode换出AccessToken
-func(a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequest)(response *entity.PreAuthCodeAccessTokenResponse){
+func (a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequest) (response *entity.PreAuthCodeAccessTokenResponse) {
 	return nil
 }

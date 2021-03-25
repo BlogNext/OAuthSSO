@@ -7,7 +7,6 @@ import (
 	"github.com/OauthSSO/service/oauth/service"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"log"
 )
 
 func CreatePreAuthCode(ctx *gin.Context) {
@@ -34,9 +33,6 @@ func PreAuthCodeAccessToken(ctx *gin.Context) {
 		panic(exception.NewException(exception.ParamErr, request.GetError(err.(validator.ValidationErrors))))
 	}
 
-
-	oauthClient := service.GetOauthClientInstall()
-	log.Println(oauthClient.GenerateNewSecretKey())
 	//预授权码换取AccessToken
 	auth := service.GetAuthInstall()
 	response := auth.PreAuthCodeAccessToken(&request)
