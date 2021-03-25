@@ -18,7 +18,7 @@ var single *auth
 func init() {
 	if single == nil {
 		single = new(auth)
-		single.lruCache = lru.New(30)
+		single.lruCache = lru.NewLruCache(30)
 	}
 }
 

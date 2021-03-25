@@ -50,11 +50,11 @@ type LruCache struct {
 	cache map[interface{}]*list.Element
 
 	//读写锁
-	rwMutex *sync.RWMutex
+	rwMutex sync.RWMutex
 }
 
 //创建一个 LRU Cache。maxEntries 为 0 表示缓存没有大小限制
-func New(maxEntries int) *LruCache {
+func NewLruCache(maxEntries int) *LruCache {
 
 	if maxEntries <= 0 {
 		maxEntries = DefaultMaxEntries
@@ -64,7 +64,6 @@ func New(maxEntries int) *LruCache {
 		MaxEntries: maxEntries,
 		ll:         list.New(),
 		cache:      make(map[interface{}]*list.Element),
-		rwMutex: &sync.RWMutex{},
 	}
 }
 
@@ -188,7 +187,7 @@ func (c *LruCache) Clear() {
 func (c *LruCache) TimingRemoveExpire() {
 	c.rwMutex.Lock()
 	defer c.rwMutex.Unlock()
-	
+
 	for key, e := range c.cache {
 		entry := e.Value.(*entry)
 		if entry.IsExpire() {
