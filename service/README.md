@@ -17,7 +17,7 @@
 
 > help 一些帮助的方法,一些快捷方法
 
-> config 配置文件夹
+> config 配置文件
 
 > common 放一些自己写的类库
 
@@ -32,4 +32,6 @@
 >> db 统一的db连接
 
 >>> mysql.go gorm官网连接mysql
+
+>> config 统一的配置类库
 

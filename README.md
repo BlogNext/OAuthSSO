@@ -16,4 +16,6 @@ oauth2.0实现单点登录
 
 >>service 后台代码(详情查看service/readme.md)
 
->> web   前端代码
+>> web   登录页面
+
+>> webSDK webSDK

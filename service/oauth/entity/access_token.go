@@ -68,3 +68,32 @@ type RefreshTokenJwt struct {
 	ClientId string `json:"client_id"`
 	UserId   uint64 `json:"user_id"`
 }
+
+//refreshToken刷新AccessToken
+type RefreshTokenRequest struct {
+	RefreshToken string `form:"refresh_token" json:"refresh_token"  binding:"required"`
+}
+
+//refreshToken请求
+func (c RefreshTokenRequest) GetError(validationErrors validator.ValidationErrors) string {
+
+	for _, fieldErr := range validationErrors {
+
+		if fieldErr.Field() == "RefreshToken" {
+			switch fieldErr.Tag() {
+			case "required":
+				return "refresh_token必填"
+			}
+		}
+
+	}
+
+	return validationErrors.Error()
+}
+
+//refreshToken响应
+type RefreshTokenResponse struct {
+	AccessToken string `form:"access_token" json:"access_token"`
+	//给客户的后端用的，不能暴露
+	RefreshToken string `form:"refresh_token" json:"refresh_token"`
+}

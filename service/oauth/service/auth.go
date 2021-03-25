@@ -146,3 +146,10 @@ func (a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequ
 
 	return response
 }
+
+//刷新token
+func (a *auth) RefreshToken(request *entity.RefreshTokenRequest) (response *entity.RefreshTokenResponse) {
+
+
+	return nil
+}

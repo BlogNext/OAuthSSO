@@ -44,6 +44,19 @@ func PreAuthCodeAccessToken(ctx *gin.Context) {
 
 //通过refreshToken刷新token
 func RefreshToken(ctx *gin.Context) {
+	var request entity.RefreshTokenRequest
+
+	if err := ctx.ShouldBind(&request); err != nil {
+		panic(exception.NewException(exception.ParamErr, request.GetError(err.(validator.ValidationErrors))))
+	}
+
+	//预授权码换取AccessToken
+	auth := service.GetAuthInstall()
+	response := auth.RefreshToken(&request)
+
+	help.Gin200SuccessResponse(ctx, "成功", response)
+
+	return
 
 }
 
