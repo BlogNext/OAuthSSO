@@ -48,15 +48,14 @@ func newAuth() *auth {
 //request,请求
 func (a *auth) CreatePreAuthCode(request *entity.CreatePreAuthCodeRequest) (response *entity.CreatePreAuthCodeResponse) {
 
+	//验证授权用户的账号密码是否正确
 	mysqlDB := db.GetDB()
-
 	userModel := new(model.UserModel)
 	if err := mysqlDB.Where("nickname = ?", request.Nickname).First(userModel).Error; err != nil {
 		//没有数据
 		panic(exception.NewException(exception.ParamErr, err.Error()))
 	}
 
-	//加密
 	h := sha1.New()
 	h.Write([]byte(request.Password))
 	inputPassword := fmt.Sprintf("%x", h.Sum(nil))
@@ -84,6 +83,7 @@ func (a *auth) CreatePreAuthCode(request *entity.CreatePreAuthCodeRequest) (resp
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, preAuthCodeJwtClaims)
 	preAuthCode, _ := token.SignedString(jwtSigningKey)
 
+	//数据返回
 	response = new(entity.CreatePreAuthCodeResponse)
 	response.RedirectUrl = request.RedirectUrl
 	response.PreAuthCode = preAuthCode
@@ -92,5 +92,29 @@ func (a *auth) CreatePreAuthCode(request *entity.CreatePreAuthCodeRequest) (resp
 
 //preAuthCode换出AccessToken
 func (a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequest) (response *entity.PreAuthCodeAccessTokenResponse) {
-	return nil
+
+	//验证预授权码是否过期
+	preAuthCodeJwtClaims := &entity.PreAuthCodeJwt{}
+	token, _ := jwt.ParseWithClaims(request.PreAuthCode, preAuthCodeJwtClaims, func(token *jwt.Token) (i interface{}, err error) {
+		return jwtSigningKey, nil
+	})
+
+	if !token.Valid {
+		panic(exception.NewException(exception.ParamErr, "pre_auth_code已经失效"))
+	}
+
+	//验证授权的clientId账号是否正确
+	mysqlDB := db.GetDB()
+	oauthClientModel := new(model.OAuthClientModel)
+	mysqlDB = mysqlDB.Where("client_id = ?", request.ClientId).Where("client_secret = ?", request.ClientSecret).First(oauthClientModel)
+	if mysqlDB.Error != nil {
+		//没有数据
+		panic(exception.NewException(exception.ParamErr, "client信息不正确"))
+	}
+
+	response = new(entity.PreAuthCodeAccessTokenResponse)
+	response.AccessToken = "123"
+	response.RefreshToken = "123111"
+
+	return response
 }
