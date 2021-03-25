@@ -8,6 +8,7 @@ import (
 	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/oauth/entity"
 	"github.com/OauthSSO/service/oauth/model"
+	"github.com/dgrijalva/jwt-go"
 	"strings"
 	"time"
 )
@@ -15,9 +16,16 @@ import (
 //auth服务单例
 var single *auth
 
+//jwt签名key
+var jwtSigningKey []byte
+
 func init() {
 	if single == nil {
 		single = newAuth()
+	}
+
+	if jwtSigningKey == nil {
+		jwtSigningKey = []byte("blog_oauth")
 	}
 }
 
@@ -58,12 +66,27 @@ func (a *auth) CreatePreAuthCode(request *entity.CreatePreAuthCodeRequest) (resp
 
 	//预授权码的格式： preAuthCode:clientId:userId
 	preAuthCodeKey := fmt.Sprintf("preAuthCode:%s:%d", request.ClientId, userModel.ID)
+	//到期时间
+	expires := 30 * time.Second
 	//添加到缓存,30秒缓存
-	a.lruCache.Add(preAuthCodeKey, preAuthCodeKey, 30*time.Second)
+	a.lruCache.Add(preAuthCodeKey, preAuthCodeKey, expires)
+
+	//预授权码用jwt生成
+	preAuthCodeJwtClaims := &entity.PreAuthCodeJwt{
+		StandardClaims: jwt.StandardClaims{
+			Issuer:    "ly",
+			ExpiresAt: time.Now().Add(expires).Unix(),
+		},
+		ClientId: request.ClientId,
+		UserId:   userModel.ID,
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, preAuthCodeJwtClaims)
+	preAuthCode, _ := token.SignedString(jwtSigningKey)
 
 	response = new(entity.CreatePreAuthCodeResponse)
 	response.RedirectUrl = request.RedirectUrl
-	response.PreAuthCode = preAuthCodeKey
+	response.PreAuthCode = preAuthCode
 	return response
 }
 
