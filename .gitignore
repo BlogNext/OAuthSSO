@@ -16,4 +16,3 @@
 
 .idea
 service/go.sum
-service/config/db.yaml
