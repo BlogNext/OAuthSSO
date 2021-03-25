@@ -62,5 +62,17 @@ func RefreshToken(ctx *gin.Context) {
 
 //验证AccessToken，看AccessToken是否有权限访问该资源
 func VerifyAccessToken(ctx *gin.Context) {
+	var request entity.VerifyAccessTokenRequest
 
+	if err := ctx.ShouldBind(&request); err != nil {
+		panic(exception.NewException(exception.ParamErr, request.GetError(err.(validator.ValidationErrors))))
+	}
+
+	//预授权码换取AccessToken
+	auth := service.GetAuthInstall()
+	response := auth.VerifyAccessToken(&request)
+
+	help.Gin200SuccessResponse(ctx, "成功", response)
+
+	return
 }

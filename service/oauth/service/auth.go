@@ -167,3 +167,22 @@ func (a *auth) RefreshToken(request *entity.RefreshTokenRequest) (response *enti
 
 	return response
 }
+
+
+//验证accessToken是否有效
+func (a *auth) VerifyAccessToken(request *entity.VerifyAccessTokenRequest) (response *entity.VerifyAccessTokenResponse) {
+
+	accessTokenJwtClaims := &entity.AccessTokenJwt{}
+	token, _ := jwt.ParseWithClaims(request.AccessToken, accessTokenJwtClaims, func(token *jwt.Token) (i interface{}, err error) {
+		return jwtSigningKey, nil
+	})
+
+	response = new(entity.VerifyAccessTokenResponse)
+
+	if token.Valid {
+		//有权限执行
+		response.IsPower = true
+	}
+
+	return response
+}
