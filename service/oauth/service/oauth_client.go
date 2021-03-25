@@ -41,4 +41,6 @@ func (o *oAuthClient) GenerateNewClientSecret() (clientSecret string) {
 	hash.Write([]byte(fmt.Sprintf("%d", randNumber)))
 	secret := fmt.Sprintf("%x", hash.Sum(nil))
 	clientSecret = fmt.Sprintf("blog_%s", secret)
+
+	return
 }
