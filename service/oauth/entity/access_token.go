@@ -14,8 +14,8 @@ type PreAuthCodeAccessTokenRequest struct {
 	PreAuthCode string `form:"pre_auth_code" json:"pre_auth_code"`
 }
 
-//创建预授权码
-func (c PreAuthCodeAccessTokenRequest) GetError(validationErrors validator.ValidationErrors) string {
+//预授码换取accessToken
+func (PreAuthCodeAccessTokenRequest) GetError(validationErrors validator.ValidationErrors) string {
 
 	for _, fieldErr := range validationErrors {
 
@@ -75,7 +75,7 @@ type RefreshTokenRequest struct {
 }
 
 //refreshToken请求
-func (c RefreshTokenRequest) GetError(validationErrors validator.ValidationErrors) string {
+func (RefreshTokenRequest) GetError(validationErrors validator.ValidationErrors) string {
 
 	for _, fieldErr := range validationErrors {
 
@@ -96,4 +96,25 @@ type RefreshTokenResponse struct {
 	AccessToken string `form:"access_token" json:"access_token"`
 	//给客户的后端用的，不能暴露
 	RefreshToken string `form:"refresh_token" json:"refresh_token"`
+}
+
+//验证accessToken是否有权限访问开放资源
+type VerifyAccessTokenRequest struct {
+	AccessToken string `form:"access_token" json:"access_token"  binding:"required"`
+}
+
+func (VerifyAccessTokenRequest) GetError(validationErrors validator.ValidationErrors) string {
+
+	for _, fieldErr := range validationErrors {
+
+		if fieldErr.Field() == "AccessToken" {
+			switch fieldErr.Tag() {
+			case "required":
+				return "access_token必填"
+			}
+		}
+
+	}
+
+	return validationErrors.Error()
 }

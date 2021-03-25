@@ -18,4 +18,6 @@ oauth2.0实现单点登录
 
 >> web   登录页面
 
->> webSDK webSDK
+>> webSDK 网站用的sdk
+
+>> golangSDK  golang语言作为服务端的sdk
