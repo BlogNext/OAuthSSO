@@ -35,7 +35,7 @@ func GetAuthInstall() *auth {
 }
 
 type auth struct {
-	//缓存
+	//缓存,目前这个缓存用不到，未来做大了，jwt不想放这么多东西，可以存到这个缓存里面，用他来拿
 	lruCache    *lru.LruCache
 	OAuthClient OAuthClient
 }
