@@ -5,6 +5,7 @@ import (
 	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/help"
 	"github.com/OauthSSO/service/oauth"
+	"github.com/OauthSSO/service/user"
 	"github.com/gin-gonic/gin"
 )
 
@@ -49,7 +50,7 @@ func apiRouter(api *gin.RouterGroup) {
 		//panic("系统级别")
 	})
 
-	//oauth功能模块
+	//oauth授权功能模块
 	oauthRouterGroup := api.Group("/oauth")
 	{
 		//预授权码办法token（有登录作用）
@@ -60,5 +61,16 @@ func apiRouter(api *gin.RouterGroup) {
 		oauthRouterGroup.POST("refresh_token", oauth.RefreshToken)
 		//验证accessToken，判断是否与权限访问资源
 		oauthRouterGroup.POST("verify_access_token", oauth.VerifyAccessToken)
+	}
+
+	//资源模块
+	resourceGroup := api.Group("/resource")
+	{
+		//用户资源
+		userResourceGroup := resourceGroup.Group("/user")
+		{
+			//获取用户信息
+			userResourceGroup.POST("/user_info",user.UserInfo)
+		}
 	}
 }
