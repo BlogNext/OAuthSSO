@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "2fd2cec3-c160-4cc6-aa59-08864d9e52af",
+		"name": "晓琛-OAuthSSO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "oauth认证服务器",
+					"item": [
+						{
+							"name": "创建预授权码",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{scheme}}://{{address}}/api/oauth/create_pre_auth_code?nickname=LaughingZhu&password=LaughingZhu&client_id=blog_1616644960&redirect_url=http://www.baidu.com",
+									"protocol": "{{scheme}}",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"api",
+										"oauth",
+										"create_pre_auth_code"
+									],
+									"query": [
+										{
+											"key": "nickname",
+											"value": "LaughingZhu"
+										},
+										{
+											"key": "password",
+											"value": "LaughingZhu"
+										},
+										{
+											"key": "client_id",
+											"value": "blog_1616644960"
+										},
+										{
+											"key": "redirect_url",
+											"value": "http://www.baidu.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "预授权码换accessToken",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{scheme}}://{{address}}/api/oauth/pre_auth_code_access_token?client_id=blog_1616644960&client_secret=blog_b09bfdf65bb51bb50307f93ab930dd7708a5b6dc&pre_auth_code=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTc2NzUwMzUsImlzcyI6Imx5IiwiY2xpZW50X2lkIjoiYmxvZ18xNjE2NjQ0OTYwIiwidXNlcl9pZCI6MX0.hciuzdz5uHHt_cm3NE6_uOnRGSm_ikCdPs2jJ0Wfi9k",
+									"protocol": "{{scheme}}",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"api",
+										"oauth",
+										"pre_auth_code_access_token"
+									],
+									"query": [
+										{
+											"key": "client_id",
+											"value": "blog_1616644960"
+										},
+										{
+											"key": "client_secret",
+											"value": "blog_b09bfdf65bb51bb50307f93ab930dd7708a5b6dc"
+										},
+										{
+											"key": "pre_auth_code",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTc2NzUwMzUsImlzcyI6Imx5IiwiY2xpZW50X2lkIjoiYmxvZ18xNjE2NjQ0OTYwIiwidXNlcl9pZCI6MX0.hciuzdz5uHHt_cm3NE6_uOnRGSm_ikCdPs2jJ0Wfi9k"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refreshToken",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "refresh_token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJseSIsImNsaWVudF9pZCI6ImJsb2dfMTYxNjY0NDk2MCIsInVzZXJfaWQiOjF9.xgwrWhjNXpYtnGHArpSFSuPgAf-Fc70FtLa4nadYmsE",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{scheme}}://{{address}}/api/oauth/refresh_token",
+									"protocol": "{{scheme}}",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"api",
+										"oauth",
+										"refresh_token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "verify_access_token验证权限",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "access_token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTc2ODIyMTksImlzcyI6Imx5IiwiY2xpZW50X2lkIjoiYmxvZ18xNjE2NjQ0OTYwIiwidXNlcl9pZCI6MX0.mD1t5TK7sUgnJpkgny_m9x-y4v9N1EvgNeNzjzwWF_o",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{scheme}}://{{address}}/api/oauth/verify_access_token",
+									"protocol": "{{scheme}}",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"api",
+										"oauth",
+										"verify_access_token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "user用户资源服务器",
+					"item": [
+						{
+							"name": "获取用户信息",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "access_token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTc2ODIyMTksImlzcyI6Imx5IiwiY2xpZW50X2lkIjoiYmxvZ18xNjE2NjQ0OTYwIiwidXNlcl9pZCI6MX0.mD1t5TK7sUgnJpkgny_m9x-y4v9N1EvgNeNzjzwWF_o",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{scheme}}://{{address}}/api/resource/user/user_info",
+									"protocol": "{{scheme}}",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"api",
+										"resource",
+										"user",
+										"user_info"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
