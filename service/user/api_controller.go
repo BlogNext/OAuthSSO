@@ -9,7 +9,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-
 //获取用户信息
 func UserInfo(ctx *gin.Context){
 

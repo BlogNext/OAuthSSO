@@ -1,13 +1,24 @@
 package main
 
 import (
+	"fmt"
+	"github.com/OauthSSO/service/common/config"
 	_ "github.com/OauthSSO/service/common/db"
 	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/help"
 	"github.com/OauthSSO/service/oauth"
 	"github.com/OauthSSO/service/user"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
 )
+
+func init(){
+	err := config.LoadConfig("server", "config", "yaml")
+	if err != nil {
+		log.Fatal("加载服务器配置失败",err)
+	}
+}
 
 func main() {
 
@@ -18,7 +29,11 @@ func main() {
 	apiRouter(api)
 
 	//web路由
-	engine.Run()
+
+	//启动web服务器
+	serverConfig,_ := config.GetConfig("server")
+	serviceInfo := serverConfig.GetStringMap("service")
+	http.ListenAndServe(fmt.Sprintf("%s:%d",serviceInfo["ip"].(string),serviceInfo["port"].(int)),engine)
 }
 
 //api路由
