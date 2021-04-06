@@ -32,8 +32,8 @@ func GetUserInfo(request *entity.UserInfoRequest) *entity.UserInfoResponse {
 
 	userModel := new(model.UserModel)
 	userId := template.GetVerify().GetAccessTokenUserId()
-	db := db.GetDB()
-	db.Where("id = ?", userId).First(userModel)
+	mysqlDB := db.GetDB()
+	mysqlDB.Where("id = ?", userId).First(userModel)
 	response := new(entity.UserInfoResponse)
 	response.Id = userModel.ID
 	response.Nickname = userModel.Nickname
