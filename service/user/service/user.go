@@ -3,7 +3,9 @@ package service
 import (
 	"fmt"
 	"github.com/OauthSSO/service/common/config"
+	"github.com/OauthSSO/service/common/db"
 	"github.com/OauthSSO/service/common/lazy/verify"
+	"github.com/OauthSSO/service/model"
 	"github.com/OauthSSO/service/user/entity"
 )
 
@@ -28,8 +30,12 @@ func GetUserInfo(request *entity.UserInfoRequest) *entity.UserInfoResponse {
 		return nil
 	}
 
+	userModel := new(model.UserModel)
+	userId := template.GetVerify().GetAccessTokenUserId()
+	db := db.GetDB()
+	db.Where("id = ?", userId).First(userModel)
 	response := new(entity.UserInfoResponse)
-	response.Id = template.GetVerify().GetAccessTokenUserId()
-	response.Nickname = "测试"
+	response.Id = userModel.ID
+	response.Nickname = userModel.Nickname
 	return response
 }
