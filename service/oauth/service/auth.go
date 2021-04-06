@@ -6,8 +6,8 @@ import (
 	"github.com/OauthSSO/service/common/cache/lru"
 	"github.com/OauthSSO/service/common/db"
 	"github.com/OauthSSO/service/exception"
-	"github.com/OauthSSO/service/oauth/entity"
 	"github.com/OauthSSO/service/model"
+	"github.com/OauthSSO/service/oauth/entity"
 	"github.com/dgrijalva/jwt-go"
 	"strings"
 	"time"
@@ -168,7 +168,6 @@ func (a *auth) RefreshToken(request *entity.RefreshTokenRequest) (response *enti
 	return response
 }
 
-
 //验证accessToken是否有效
 func (a *auth) VerifyAccessToken(request *entity.VerifyAccessTokenRequest) (response *entity.VerifyAccessTokenResponse) {
 
@@ -182,6 +181,7 @@ func (a *auth) VerifyAccessToken(request *entity.VerifyAccessTokenRequest) (resp
 	if token.Valid {
 		//有权限执行
 		response.IsPower = true
+		response.UserId = accessTokenJwtClaims.UserId
 	}
 
 	return response

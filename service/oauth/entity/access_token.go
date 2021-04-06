@@ -122,5 +122,6 @@ func (VerifyAccessTokenRequest) GetError(validationErrors validator.ValidationEr
 //验证响应
 type VerifyAccessTokenResponse struct {
 	//是否有权限访问资源
-	IsPower bool  `form:"is_power" json:"is_power"`
+	IsPower bool   `json:"is_power"`
+	UserId  uint64 `json:"user_id"`
 }
