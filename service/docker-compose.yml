@@ -10,7 +10,8 @@ services:
     working_dir: /go/src/github.com/OauthSSO/service
     volumes:
       - ./:/go/src/github.com/OauthSSO/service
-    command: /bin/bash -c "go mod download && go build -o sso  main.go && ./sso"
+      - ./config/:/go/bin/config:ro
+    command: /bin/bash -c "go install -v ./ && /go/bin/service"
     #设置环境变量
     environment:
       - GIN_MODE=release
