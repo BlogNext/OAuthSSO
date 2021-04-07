@@ -15,6 +15,6 @@
 # vendor/
 
 .idea
-service/go.sum
+
 service/config/db.yaml
 service/config/server.yaml
