@@ -5,6 +5,7 @@ import (
 	"github.com/OauthSSO/service/common/config"
 	"github.com/OauthSSO/service/common/db"
 	"github.com/OauthSSO/service/common/lazy/verify"
+	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/model"
 	"github.com/OauthSSO/service/user/entity"
 )
@@ -26,8 +27,9 @@ func GetUserInfo(request *entity.UserInfoRequest) *entity.UserInfoResponse {
 	_, err := template.GetResource(request.AccessToken.AccessToken, func() verify.Resource {
 		return nil
 	})
+
 	if err != nil {
-		return nil
+		panic(exception.NewException(exception.ParamErr,err.Error()))
 	}
 
 	userModel := new(model.UserModel)

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/OauthSSO/service/common/config"
+	"github.com/OauthSSO/service/common/db"
 	_ "github.com/OauthSSO/service/common/db"
 	"github.com/OauthSSO/service/exception"
 	"github.com/OauthSSO/service/help"
@@ -14,6 +15,14 @@ import (
 )
 
 func init(){
+	//加载服务器配置
+	loadServiceConfig()
+	//加载数据库配置
+	db.LoadDBConfig()
+}
+
+//加载服务器配置文件
+func loadServiceConfig(){
 	err := config.LoadConfig("server", "config", "yaml")
 	if err != nil {
 		log.Fatal("加载服务器配置失败",err)
