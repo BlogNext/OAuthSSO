@@ -10,7 +10,7 @@ services:
     working_dir: /go/src/github.com/OauthSSO/service
     volumes:
       - ./:/go/src/github.com/OauthSSO/service
-      - ./config/:/go/bin/config:ro
+      - ./config/:/go/bin/config
     command: /bin/bash -c "go install -v ./ && /go/bin/service"
     #设置环境变量
     environment:
