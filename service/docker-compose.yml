@@ -9,7 +9,7 @@ services:
       #工作目录空间
     working_dir: /go/src/github.com/OauthSSO/service
     volumes:
-      - ./:/go/src/github.com/OauthSSO/service:ro
+      - ./:/go/src/github.com/OauthSSO/service
     command: /bin/bash -c "go build -o sso  main.go && ./sso"
     #设置环境变量
     environment:
