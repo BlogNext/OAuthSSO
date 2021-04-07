@@ -15,7 +15,8 @@
 # vendor/
 
 .idea
-
+#golang的忽略文件
+service/sso
 service/go.sum
 service/config/db.yaml
 service/config/server.yaml
