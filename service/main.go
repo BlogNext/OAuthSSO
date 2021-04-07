@@ -42,7 +42,7 @@ func main() {
 	//启动web服务器
 	serverConfig,_ := config.GetConfig("server")
 	serviceInfo := serverConfig.GetStringMap("service")
-	http.ListenAndServe(fmt.Sprintf("%s:%d",serviceInfo["ip"].(string),serviceInfo["port"].(int)),engine)
+	http.ListenAndServe(fmt.Sprintf(":%d",serviceInfo["port"].(int)),engine)
 }
 
 //api路由
