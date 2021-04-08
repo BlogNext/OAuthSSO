@@ -13,6 +13,13 @@ import (
 	"time"
 )
 
+const (
+	//token颁发人
+	issuerPreAuthCode  = "pre_auth_code"
+	issuerAccessToken  = "access_token"
+	issuerRefreshToken = "refreshToken"
+)
+
 //auth服务单例
 var single *auth
 
@@ -73,7 +80,7 @@ func (a *auth) CreatePreAuthCode(request *entity.CreatePreAuthCodeRequest) (resp
 	//预授权码用jwt生成
 	preAuthCodeJwtClaims := &entity.PreAuthCodeJwt{
 		StandardClaims: jwt.StandardClaims{
-			Issuer:    "ly",
+			Issuer:    issuerPreAuthCode,
 			ExpiresAt: time.Now().Add(expires).Unix(),
 		},
 		ClientId: request.ClientId,
@@ -103,6 +110,10 @@ func (a *auth) PreAuthCodeAccessToken(request *entity.PreAuthCodeAccessTokenRequ
 		panic(exception.NewException(exception.ParamErr, "pre_auth_code已经失效"))
 	}
 
+	if strings.Compare(preAuthCodeJwtClaims.Issuer, issuerPreAuthCode) != 0 {
+		panic(exception.NewException(exception.ParamErr, "PreAuthCode颁发人非法"))
+	}
+
 	//验证授权的clientId账号是否正确
 	mysqlDB := db.GetDB()
 	oauthClientModel := new(model.OAuthClientModel)
@@ -123,7 +134,7 @@ func (a *auth) generateToken(clientId string, userId uint64) (accessToken string
 	//accessToken用jwt生成,有效时间2小时
 	accessTokenClaims := &entity.AccessTokenJwt{
 		StandardClaims: jwt.StandardClaims{
-			Issuer:    "ly",
+			Issuer:    issuerAccessToken,
 			ExpiresAt: time.Now().Add(2 * time.Hour).Unix(),
 		},
 		ClientId: clientId,
@@ -136,7 +147,7 @@ func (a *auth) generateToken(clientId string, userId uint64) (accessToken string
 	//refreshToken用jwt生成，无限时间
 	refreshTokenClaims := &entity.RefreshTokenJwt{
 		StandardClaims: jwt.StandardClaims{
-			Issuer: "ly",
+			Issuer: issuerRefreshToken,
 		},
 		ClientId: clientId,
 		UserId:   userId,
@@ -162,6 +173,10 @@ func (a *auth) RefreshToken(request *entity.RefreshTokenRequest) (response *enti
 		panic(exception.NewException(exception.ParamErr, "refresh_token已经失效"))
 	}
 
+	if strings.Compare(refreshTokenJwtClaims.Issuer, issuerRefreshToken) != 0 {
+		panic(exception.NewException(exception.ParamErr, "refreshToken颁发人非法"))
+	}
+
 	response = new(entity.RefreshTokenResponse)
 	response.AccessToken, response.RefreshToken = a.generateToken(refreshTokenJwtClaims.ClientId, refreshTokenJwtClaims.UserId)
 
@@ -176,13 +191,17 @@ func (a *auth) VerifyAccessToken(request *entity.VerifyAccessTokenRequest) (resp
 		return jwtSigningKey, nil
 	})
 
-	response = new(entity.VerifyAccessTokenResponse)
-
-	if token.Valid {
-		//有权限执行
-		response.IsPower = true
-		response.UserId = accessTokenJwtClaims.UserId
+	if !token.Valid {
+		panic(exception.NewException(exception.ParamErr, "access_token已经失效"))
 	}
+
+	if strings.Compare(accessTokenJwtClaims.Issuer, issuerAccessToken) != 0 {
+		panic(exception.NewException(exception.ParamErr, "accessToken颁发人非法"))
+	}
+
+	response = new(entity.VerifyAccessTokenResponse)
+	response.IsPower = true
+	response.UserId = accessTokenJwtClaims.UserId
 
 	return response
 }
