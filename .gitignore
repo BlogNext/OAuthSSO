@@ -20,3 +20,7 @@ service/sso
 service/go.sum
 service/config/db.yaml
 service/config/server.yaml
+
+#web 忽略的文件
+web/.umi
+web/node_modules
