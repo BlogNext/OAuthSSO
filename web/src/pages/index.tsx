@@ -3,23 +3,27 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-04-27 17:47:14
+ * @LastEditTime: 2021-04-28 15:31:31
  */
 import React, { useState } from 'react';
-import { Form, Input, Button } from 'antd'
+import { history } from 'umi'
+import { Form, Input, Button, message } from 'antd'
 import { CloseOutlined } from '@ant-design/icons';
 import { login } from '../api'
 import './style.less'
 export default () => {
   const [type, setType] = useState(0)
+  console.log(history)
 
 
   const onFinish = async(values: any) => {
     console.log('Success:', values);
-    let res = await login ({...values})
-    if(res.status === 200) {
+    let res = await login ({...values, ...history.location.query})
+    if(res.code === 0) {
       // success
       console.log('登录成功', res)
+    } else {
+      message.error(res.msg, 2)
     }
   };
 
