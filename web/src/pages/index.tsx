@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-04-28 15:31:31
+ * @LastEditTime: 2021-05-12 19:01:21
  */
 import React, { useState } from 'react';
 import { history } from 'umi'
@@ -22,6 +22,8 @@ export default () => {
     if(res.code === 0) {
       // success
       console.log('登录成功', res)
+      let referrer = document.referrer
+      location.href = `${referrer}&pre_auth_code=${res.data.pre_auth_code}&redirect_url=${res.data.redirect_url}`
     } else {
       message.error(res.msg, 2)
     }
