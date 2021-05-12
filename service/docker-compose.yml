@@ -18,3 +18,11 @@ services:
       - GOPROXY=https://mirrors.aliyun.com/goproxy/
     ports:
       - "8084:8084"
+    networks:
+      - custom_net
+networks:
+  #自定义网络
+  custom_net:
+    external:
+      #外部的网络名字
+      name: blog_next
