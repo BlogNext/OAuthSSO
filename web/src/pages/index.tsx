@@ -3,36 +3,30 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-05-13 18:43:12
+ * @LastEditTime: 2021-05-13 22:35:24
  */
 import React, { useState, useEffect } from 'react';
 import { history } from 'umi'
 import OAuthSSO from '../utils/sso.js'
 
-import { Form, Input, Button, message } from 'antd'
+import { Form, Input, Button } from 'antd'
 import { CloseOutlined } from '@ant-design/icons';
-import { createCode } from '../api/index.js'
 import './style.less'
+let Oauth: { ready: () => void; createCode: (arg0: any) => void; } | null
 export default () => {
   const [type, setType] = useState(0)
 
   useEffect(() => {
-    new OAuthSSO( 'blog_1616644960','https://blog.laughingzhu.cn/front/login/login_blog_next_pre_code'
-    ).ready()
+    Oauth = new OAuthSSO( 'blog_1616644960','https://blog.laughingzhu.cn/front/login/login_blog_next_pre_code'
+    );
+    Oauth.ready()
+
+    return () => {Oauth = null}
   }, [''])
 
 
-  const onFinish = async(values: any) => {
-    console.log('Success:', values);
-    let res = await createCode ({...values, ...history.location.query})
-    if(res.code === 0) {
-      // success
-      console.log('登录成功', res)
-      let referrer = document.referrer
-      location.href = `${referrer}&pre_auth_code=${res.data.pre_auth_code}`
-    } else {
-      message.error(res.msg, 2)
-    }
+  const onFinish = (values: any) => {
+    Oauth.createCode({...values})
   };
 
   const closeLogin = () => {
