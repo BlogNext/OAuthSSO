@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-27 16:50:25
  * @LastEditros: 
- * @LastEditTime: 2021-04-27 18:16:43
+ * @LastEditTime: 2021-05-13 16:16:44
  */
 /**
  * request 网络请求工具
@@ -63,13 +63,13 @@ request.interceptors.request.use((url, options) => {
   Toast.loading('加载中', 0)
 
 
-  options.headers = {
-
-    'x-access-token': localStorage.getItem('blog_token') || ''
-  }
+  // options.headers = {
+  //   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+  // }
   console.log(options)
   return ({
     url,
+    
     options: {
       ...options
     },

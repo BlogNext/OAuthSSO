@@ -3,27 +3,33 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-05-12 19:01:21
+ * @LastEditTime: 2021-05-13 18:43:12
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { history } from 'umi'
+import OAuthSSO from '../utils/sso.js'
+
 import { Form, Input, Button, message } from 'antd'
 import { CloseOutlined } from '@ant-design/icons';
-import { login } from '../api'
+import { createCode } from '../api/index.js'
 import './style.less'
 export default () => {
   const [type, setType] = useState(0)
-  console.log(history)
+
+  useEffect(() => {
+    new OAuthSSO( 'blog_1616644960','https://blog.laughingzhu.cn/front/login/login_blog_next_pre_code'
+    ).ready()
+  }, [''])
 
 
   const onFinish = async(values: any) => {
     console.log('Success:', values);
-    let res = await login ({...values, ...history.location.query})
+    let res = await createCode ({...values, ...history.location.query})
     if(res.code === 0) {
       // success
       console.log('登录成功', res)
       let referrer = document.referrer
-      location.href = `${referrer}&pre_auth_code=${res.data.pre_auth_code}&redirect_url=${res.data.redirect_url}`
+      location.href = `${referrer}&pre_auth_code=${res.data.pre_auth_code}`
     } else {
       message.error(res.msg, 2)
     }
