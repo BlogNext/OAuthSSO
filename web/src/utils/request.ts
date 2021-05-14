@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-27 16:50:25
  * @LastEditros: 
- * @LastEditTime: 2021-05-13 22:05:54
+ * @LastEditTime: 2021-05-14 08:59:12
  */
 /**
  * request 网络请求工具
@@ -38,7 +38,7 @@ import {
  * 异常处理程序
  */
 
-const errorHandler = error => {
+const errorHandler = (error: any) => {
   const {
     response,
     data
@@ -72,7 +72,7 @@ request.interceptors.request.use((url, options) => {
   });
 });
 
-request.interceptors.response.use((response) => {
+request.interceptors.response.use((response: any) => {
   const {
     status
   } = response

@@ -3,37 +3,36 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-05-13 22:35:24
+ * @LastEditTime: 2021-05-14 10:04:44
  */
 import React, { useState, useEffect } from 'react';
 import { history } from 'umi'
-import OAuthSSO from '../utils/sso.js'
+import OAuthSSO from '../utils/sso'
 
 import { Form, Input, Button } from 'antd'
-import { CloseOutlined } from '@ant-design/icons';
 import './style.less'
-let Oauth: { ready: () => void; createCode: (arg0: any) => void; } | null
+import { message } from 'antd';
+let Oauth: OAuthSSO | null = null
 export default () => {
   const [type, setType] = useState(0)
 
   useEffect(() => {
     Oauth = new OAuthSSO( 'blog_1616644960','https://blog.laughingzhu.cn/front/login/login_blog_next_pre_code'
     );
-    Oauth.ready()
+    Oauth.login()
 
     return () => {Oauth = null}
   }, [''])
 
 
   const onFinish = (values: any) => {
-    Oauth.createCode({...values})
+    Oauth && Oauth.create({...values}, (error: any) => {
+      message.error(error, 2)
+    })
   };
 
-  const closeLogin = () => {
-  }
 
   const onBlur = (type: number) => {
-    console.log(111)
     setType(type)
   }
 
@@ -48,7 +47,7 @@ export default () => {
         <img  src={require('../assets/login/blindfold.png')} alt="" className={`login-wrapper-carton login-wrapper-carton--blindfold ${type !== 2 && 'hidden'}`}/>
         <div className="login-wrapper-top flex">
           <div className="login-wrapper-top--title">账密登录</div>
-          <CloseOutlined onClick={closeLogin} className='login-wrapper-top--close' />
+          <div></div>
         </div>
 
         <Form
