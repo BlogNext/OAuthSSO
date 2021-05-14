@@ -2,14 +2,19 @@
 
 ## Getting Started
 
-Install dependencies,
 
+
+安装node_moudles
 ```bash
-$ yarn
+$ npm install
 ```
 
-Start the dev server,
+本地环境运行
 
 ```bash
-$ yarn start
+$ npm run start
+```
+服务端部署 
+```bash
+$ npm run build
 ```
