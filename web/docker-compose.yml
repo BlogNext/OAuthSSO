@@ -14,4 +14,4 @@ services:
       - -c
       - |
         npm install
-        umi build
+        npm run build
