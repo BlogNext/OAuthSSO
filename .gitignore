@@ -24,3 +24,4 @@ service/config/server.yaml
 #web 忽略的文件
 web/.umi
 web/node_modules
+web/dist
