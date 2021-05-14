@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: LaughingZhu
+ * @Date: 2021-05-14 15:45:40
+ * @LastEditros: 
+ * @LastEditTime: 2021-05-14 16:11:52
+-->
 # umi project
 
 ## Getting Started
@@ -16,5 +23,5 @@ $ npm run start
 ```
 服务端部署 
 ```bash
-$ npm run build
+$ umi build
 ```

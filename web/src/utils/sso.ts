@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-05-12 14:05:23
  * @LastEditros: 
- * @LastEditTime: 2021-05-14 10:05:36
+ * @LastEditTime: 2021-05-14 17:50:10
  */
 import qs from 'qs'
 import request from "./request";
@@ -19,30 +19,30 @@ class OAuthSSO {
     this.redirect_url = redirect_url;
   }
 
-  /**
-   * @desc 获取pre_auth_code
-   * @param {*} params 
-   */
-  async create (params: any, error?: ((arg0: any) => any) | undefined) {
-    const reqData = {
-      ...params,
-      client_id: this.client_id,
-      redirect_url: this.redirect_url
-    }
+  // /**
+  //  * @desc 获取pre_auth_code
+  //  * @param {*} params 
+  //  */
+  // async create (params: any, error?: ((arg0: any) => any) | undefined) {
+  //   const reqData = {
+  //     ...params,
+  //     client_id: this.client_id,
+  //     redirect_url: this.redirect_url
+  //   }
 
-    let res = await this.createRequest (reqData)
-    if(res.code === 0) {
-      // success
-      console.log('获取成功')
-      let referrer = document.referrer;
-      let prefix = referrer.indexOf('?') > -1 ? '&' : '?'
-      location.href = `${referrer}${prefix}pre_auth_code=${res.data.pre_auth_code}`
-    } else {
-      console.log('失败')
+  //   let res = await this.createRequest (reqData)
+  //   if(res.code === 0) {
+  //     // success
+  //     console.log('获取成功')
+  //     let referrer = document.referrer;
+  //     let prefix = referrer.indexOf('?') > -1 ? '&' : '?'
+  //     location.href = `${referrer}${prefix}pre_auth_code=${res.data.pre_auth_code}`
+  //   } else {
+  //     console.log('失败')
 
-      error && error(res.msg)
-    }
-  };
+  //     error && error(res.msg)
+  //   }
+  // };
 
   // 博客登录
   async login () {

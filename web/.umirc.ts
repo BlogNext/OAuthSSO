@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-04-27 16:26:02
+ * @LastEditTime: 2021-05-14 17:54:11
  */
 import { defineConfig } from 'umi';
 
@@ -14,6 +14,7 @@ export default defineConfig({
     type: 'none',
   },
   routes: [
+    { path: '/error', component: '@/pages/error/index'},
     { path: '/', component: '@/pages/index' },
   ],
   publicPath: './',

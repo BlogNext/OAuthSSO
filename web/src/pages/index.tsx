@@ -3,32 +3,58 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-05-14 11:34:24
+ * @LastEditTime: 2021-05-14 18:00:37
  */
 import React, { useState, useEffect } from 'react';
 import { history } from 'umi'
-import OAuthSSO from '@laughingzhu/oauthsdk'
 
 import { Form, Input, Button } from 'antd'
 import './style.less'
 import { message } from 'antd';
-let Oauth: OAuthSSO | null = null
+import { create } from '../api/index'
 export default () => {
   const [type, setType] = useState(0)
 
   useEffect(() => {
-    Oauth = new OAuthSSO( 'blog_1616644960','https://blog.laughingzhu.cn/front/login/login_blog_next_pre_code'
-    );
-    Oauth.login()
+    // Oauth = new OAuthSSO( 'blog_1616644960','https://blog.laughingzhu.cn/front/login/login_blog_next_pre_code'
+    // );
+    // Oauth.login()
 
-    return () => {Oauth = null}
+    // return () => {Oauth = null}
+    _checkParam()
   }, [''])
 
 
-  const onFinish = (values: any) => {
-    Oauth && Oauth.create({...values}, (error: any) => {
-      message.error(error, 2)
-    })
+  const _checkParam = () => {
+    const { client_id, redirect_url } = history.location.query
+    if(client_id && redirect_url) {
+      // 都存在
+    } else {
+      history.push({
+        pathname: '/error',
+        query: {
+          client_id,
+          redirect_url
+        }
+      })
+    }
+  }
+
+
+  const onFinish = async(values: any) => {
+    const { client_id, redirect_url } = history.location.query
+    let res = await create({...values, client_id, redirect_url })
+    if(res.code === 0) {
+      // 登录成功
+      message.success('登录成功，正在跳转！', 2, () => {
+        let referrer = document.referrer;
+        let prefix = referrer.indexOf('?') > -1 ? '&' : '?'
+        location.href = `${referrer}${prefix}pre_auth_code=${res.data.pre_auth_code}`
+      })
+    } else {
+      // 登录失败
+      message.error(res.msg, 2)
+    }
   };
 
 
