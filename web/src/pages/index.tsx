@@ -3,42 +3,36 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-05-14 18:00:37
+ * @LastEditTime: 2021-05-15 13:38:31
  */
 import React, { useState, useEffect } from 'react';
 import { history } from 'umi'
 
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 import './style.less'
-import { message } from 'antd';
 import { create } from '../api/index'
 export default () => {
   const [type, setType] = useState(0)
 
-  useEffect(() => {
-    // Oauth = new OAuthSSO( 'blog_1616644960','https://blog.laughingzhu.cn/front/login/login_blog_next_pre_code'
-    // );
-    // Oauth.login()
-
-    // return () => {Oauth = null}
-    _checkParam()
-  }, [''])
+  // useEffect(() => {
+  //   _checkParam()
+  // }, [''])
 
 
-  const _checkParam = () => {
-    const { client_id, redirect_url } = history.location.query
-    if(client_id && redirect_url) {
-      // 都存在
-    } else {
-      history.push({
-        pathname: '/error',
-        query: {
-          client_id,
-          redirect_url
-        }
-      })
-    }
-  }
+  // const _checkParam = () => {
+  //   const { client_id, redirect_url } = history.location.query
+  //   if(client_id && redirect_url) {
+  //     // 都存在
+  //   } else {
+  //     history.push({
+  //       pathname: '/error',
+  //       query: {
+  //         client_id,
+  //         redirect_url
+  //       }
+  //     })
+  //   }
+  // }
 
 
   const onFinish = async(values: any) => {
