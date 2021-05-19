@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-05-14 17:43:41
  * @LastEditros: 
- * @LastEditTime: 2021-05-19 13:59:12
+ * @LastEditTime: 2021-05-19 14:43:22
  */
 // 错误页面
 import React, { useEffect, useState } from 'react'
@@ -25,7 +25,7 @@ export default () => {
     if(!client_id) {
       // client_id 不存在
       console.log(2222)
-      setMsg('client参数错误')
+      setMsg('client_id参数错误')
       return false
     }
     if(!redirect_url) {
