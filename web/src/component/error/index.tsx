@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-05-14 17:43:41
  * @LastEditros: 
- * @LastEditTime: 2021-05-14 18:10:01
+ * @LastEditTime: 2021-05-19 13:59:12
  */
 // 错误页面
 import React, { useEffect, useState } from 'react'
@@ -38,7 +38,7 @@ export default () => {
 
   return (
     <Result
-      style={{width: '100vw', height: '100vh'}}
+      style={{width: '100vw', height: '100vh', color: '#fff'}}
       icon={<FrownOutlined />}
       title={msg}
       extra={''}
