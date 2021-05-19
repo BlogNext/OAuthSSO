@@ -3,7 +3,7 @@
  * @Author: LaughingZhu
  * @Date: 2021-04-22 14:55:06
  * @LastEditros: 
- * @LastEditTime: 2021-05-19 13:54:42
+ * @LastEditTime: 2021-05-19 14:35:28
  */
 import React, { useState, useEffect } from 'react';
 
@@ -25,7 +25,9 @@ export default () => {
     const { client_id, redirect_url } = history.location.query
     if(client_id && redirect_url) {
       // 都存在
+      setStatus(true)
     } else {
+      setStatus(false)
     }
   }
 
